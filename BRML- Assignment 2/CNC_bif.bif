@@ -1,0 +1,348 @@
+network "unnamedBN" {
+// written by aGrUM 2.1.1
+}
+
+variable prod_quality {
+   type discrete[3] {H, L, M};
+}
+
+variable air_temp {
+   type discrete[5] {high, low, normal, very_high, very_low};
+}
+
+variable process_temp {
+   type discrete[5] {high, low, normal, very_high, very_low};
+}
+
+variable rot_speed {
+   type discrete[5] {high, low, normal, very_high, very_low};
+}
+
+variable torque {
+   type discrete[5] {high, low, normal, very_high, very_low};
+}
+
+variable tool_wear {
+   type discrete[5] {high, low, normal, very_high, very_low};
+}
+
+variable machine_failure {
+   type discrete[2] {False, True};
+}
+
+variable tool_wear_failure {
+   type discrete[2] {False, True};
+}
+
+variable heat_dissipation_failure {
+   type discrete[2] {False, True};
+}
+
+variable power_failure {
+   type discrete[2] {False, True};
+}
+
+variable overstrain_failure {
+   type discrete[2] {False, True};
+}
+
+variable random_failure {
+   type discrete[2] {False, True};
+}
+
+probability (prod_quality) {
+   table 0.100323 0.599973 0.299703;
+}
+probability (air_temp) {
+   table 0.238196 0.30139 0.30379 0.10131 0.0553145;
+}
+probability (process_temp) {
+   table 0.308489 0.249795 0.341586 0.0780122 0.0221178;
+}
+probability (rot_speed) {
+   table 0.00661934 0.421378 0.0438156 0.0030197 0.525167;
+}
+probability (torque) {
+   table 0.214499 0.227997 0.529367 0.0131187 0.0150185;
+}
+probability (tool_wear | prod_quality) {
+   (H) 0.228306 0.239269 0.230299 0.0648505 0.237276;
+   (L) 0.233498 0.227665 0.229332 0.0700072 0.239498;
+   (M) 0.232896 0.2379 0.226223 0.062411 0.240569;
+}
+probability (machine_failure | heat_dissipation_failure, overstrain_failure, power_failure, random_failure, tool_wear_failure) {
+   (False, False, False, False, False) 0.999066 0.000934065;
+   (True, False, False, False, False) 0.000147362 0.999853;
+   (False, True, False, False, False) 0.00020024 0.9998;
+   (True, True, False, False, False) 0.00259067 0.997409;
+   (False, False, True, False, False) 0.000195236 0.999805;
+   (True, False, True, False, False) 0.00515464 0.994845;
+   (False, True, True, False, False) 0.00141643 0.998584;
+   (True, True, True, False, False) 0.5 0.5;
+   (False, False, False, True, False) 0.999133 0.000866551;
+   (True, False, False, True, False) 0.5 0.5;
+   (False, True, False, True, False) 0.5 0.5;
+   (True, True, False, True, False) 0.5 0.5;
+   (False, False, True, True, False) 0.5 0.5;
+   (True, False, True, True, False) 0.5 0.5;
+   (False, True, True, True, False) 0.5 0.5;
+   (True, True, True, True, False) 0.5 0.5;
+   (False, False, False, False, True) 0.000371747 0.999628;
+   (True, False, False, False, True) 0.5 0.5;
+   (False, True, False, False, True) 0.00769231 0.992308;
+   (True, True, False, False, True) 0.5 0.5;
+   (False, False, True, False, True) 0.5 0.5;
+   (True, False, True, False, True) 0.5 0.5;
+   (False, True, True, False, True) 0.0151515 0.984848;
+   (True, True, True, False, True) 0.5 0.5;
+   (False, False, False, True, True) 0.0151515 0.984848;
+   (True, False, False, True, True) 0.5 0.5;
+   (False, True, False, True, True) 0.5 0.5;
+   (True, True, False, True, True) 0.5 0.5;
+   (False, False, True, True, True) 0.5 0.5;
+   (True, False, True, True, True) 0.5 0.5;
+   (False, True, True, True, True) 0.5 0.5;
+   (True, True, True, True, True) 0.5 0.5;
+}
+probability (tool_wear_failure | tool_wear) {
+   (high) 0.999098 0.000901984;
+   (low) 0.999957 4.31183e-05;
+   (normal) 0.999956 4.37598e-05;
+   (very_high) 0.934395 0.0656055;
+   (very_low) 0.999958 4.17327e-05;
+}
+probability (heat_dissipation_failure | rot_speed, air_temp, process_temp) {
+   (high, high, high) 0.999556 0.00044405;
+   (low, high, high) 0.999994 5.5401e-06;
+   (normal, high, high) 0.999952 4.76145e-05;
+   (very_high, high, high) 0.999002 0.000998004;
+   (very_low, high, high) 0.971554 0.0284457;
+   (high, low, high) 0.5 0.5;
+   (low, low, high) 0.9996 0.00039968;
+   (normal, low, high) 0.5 0.5;
+   (very_high, low, high) 0.5 0.5;
+   (very_low, low, high) 0.99867 0.00132979;
+   (high, normal, high) 0.9995 0.0004995;
+   (low, normal, high) 0.999991 9.41159e-06;
+   (normal, normal, high) 0.999913 8.69414e-05;
+   (very_high, normal, high) 0.996032 0.00396825;
+   (very_low, normal, high) 0.999993 6.87276e-06;
+   (high, very_high, high) 0.996032 0.00396825;
+   (low, very_high, high) 0.99997 3.00734e-05;
+   (normal, very_high, high) 0.9998 0.00019992;
+   (very_high, very_high, high) 0.998008 0.00199203;
+   (very_low, very_high, high) 0.737167 0.262833;
+   (high, very_low, high) 0.5 0.5;
+   (low, very_low, high) 0.5 0.5;
+   (normal, very_low, high) 0.5 0.5;
+   (very_high, very_low, high) 0.5 0.5;
+   (very_low, very_low, high) 0.5 0.5;
+   (high, high, low) 0.5 0.5;
+   (low, high, low) 0.5 0.5;
+   (normal, high, low) 0.5 0.5;
+   (very_high, high, low) 0.5 0.5;
+   (very_low, high, low) 0.5 0.5;
+   (high, low, low) 0.999556 0.00044405;
+   (low, low, low) 0.999995 5.13474e-06;
+   (normal, low, low) 0.999935 6.45078e-05;
+   (very_high, low, low) 0.999334 0.000665779;
+   (very_low, low, low) 0.999996 4.11519e-06;
+   (high, normal, low) 0.99867 0.00132979;
+   (low, normal, low) 0.999964 3.60334e-05;
+   (normal, normal, low) 0.999692 0.000307503;
+   (very_high, normal, low) 0.996032 0.00396825;
+   (very_low, normal, low) 0.999977 2.28561e-05;
+   (high, very_high, low) 0.5 0.5;
+   (low, very_high, low) 0.5 0.5;
+   (normal, very_high, low) 0.5 0.5;
+   (very_high, very_high, low) 0.5 0.5;
+   (very_low, very_high, low) 0.5 0.5;
+   (high, very_low, low) 0.998008 0.00199203;
+   (low, very_low, low) 0.999976 2.42412e-05;
+   (normal, very_low, low) 0.999637 0.000363372;
+   (very_high, very_low, low) 0.998008 0.00199203;
+   (very_low, very_low, low) 0.999979 2.13895e-05;
+   (high, high, normal) 0.9996 0.00039968;
+   (low, high, normal) 0.999985 1.52667e-05;
+   (normal, high, normal) 0.999871 0.000128999;
+   (very_high, high, normal) 0.999201 0.000798722;
+   (very_low, high, normal) 0.861626 0.138374;
+   (high, low, normal) 0.9995 0.0004995;
+   (low, low, normal) 0.999992 7.92067e-06;
+   (normal, low, normal) 0.999915 8.50919e-05;
+   (very_high, low, normal) 0.99867 0.00132979;
+   (very_low, low, normal) 0.999993 6.95642e-06;
+   (high, normal, normal) 0.999556 0.00044405;
+   (low, normal, normal) 0.999994 5.94347e-06;
+   (normal, normal, normal) 0.999944 5.63317e-05;
+   (very_high, normal, normal) 0.998008 0.00199203;
+   (very_low, normal, normal) 0.998862 0.00113831;
+   (high, very_high, normal) 0.5 0.5;
+   (low, very_high, normal) 0.999429 0.000570776;
+   (normal, very_high, normal) 0.996032 0.00396825;
+   (very_high, very_high, normal) 0.5 0.5;
+   (very_low, very_high, normal) 0.571347 0.428653;
+   (high, very_low, normal) 0.5 0.5;
+   (low, very_low, normal) 0.5 0.5;
+   (normal, very_low, normal) 0.5 0.5;
+   (very_high, very_low, normal) 0.5 0.5;
+   (very_low, very_low, normal) 0.5 0.5;
+   (high, high, very_high) 0.5 0.5;
+   (low, high, very_high) 0.999857 0.000142816;
+   (normal, high, very_high) 0.5 0.5;
+   (very_high, high, very_high) 0.996032 0.00396825;
+   (very_low, high, very_high) 0.999862 0.000137893;
+   (high, low, very_high) 0.5 0.5;
+   (low, low, very_high) 0.5 0.5;
+   (normal, low, very_high) 0.5 0.5;
+   (very_high, low, very_high) 0.5 0.5;
+   (very_low, low, very_high) 0.5 0.5;
+   (high, normal, very_high) 0.5 0.5;
+   (low, normal, very_high) 0.999733 0.000266525;
+   (normal, normal, very_high) 0.99867 0.00132979;
+   (very_high, normal, very_high) 0.5 0.5;
+   (very_low, normal, very_high) 0.999778 0.000222124;
+   (high, very_high, very_high) 0.999334 0.000665779;
+   (low, very_high, very_high) 0.999986 1.36051e-05;
+   (normal, very_high, very_high) 0.999882 0.000117619;
+   (very_high, very_high, very_high) 0.99867 0.00132979;
+   (very_low, very_high, very_high) 0.997123 0.00287672;
+   (high, very_low, very_high) 0.5 0.5;
+   (low, very_low, very_high) 0.5 0.5;
+   (normal, very_low, very_high) 0.5 0.5;
+   (very_high, very_low, very_high) 0.5 0.5;
+   (very_low, very_low, very_high) 0.5 0.5;
+   (high, high, very_low) 0.5 0.5;
+   (low, high, very_low) 0.5 0.5;
+   (normal, high, very_low) 0.5 0.5;
+   (very_high, high, very_low) 0.5 0.5;
+   (very_low, high, very_low) 0.5 0.5;
+   (high, low, very_low) 0.5 0.5;
+   (low, low, very_low) 0.999667 0.000333111;
+   (normal, low, very_low) 0.998008 0.00199203;
+   (very_high, low, very_low) 0.5 0.5;
+   (very_low, low, very_low) 0.99981 0.000190404;
+   (high, normal, very_low) 0.5 0.5;
+   (low, normal, very_low) 0.5 0.5;
+   (normal, normal, very_low) 0.5 0.5;
+   (very_high, normal, very_low) 0.5 0.5;
+   (very_low, normal, very_low) 0.5 0.5;
+   (high, very_high, very_low) 0.5 0.5;
+   (low, very_high, very_low) 0.5 0.5;
+   (normal, very_high, very_low) 0.5 0.5;
+   (very_high, very_high, very_low) 0.5 0.5;
+   (very_low, very_high, very_low) 0.5 0.5;
+   (high, very_low, very_low) 0.996032 0.00396825;
+   (low, very_low, very_low) 0.999945 5.47885e-05;
+   (normal, very_low, very_low) 0.999692 0.000307503;
+   (very_high, very_low, very_low) 0.5 0.5;
+   (very_low, very_low, very_low) 0.99996 4.04008e-05;
+}
+probability (power_failure | torque, rot_speed) {
+   (high, high) 0.5 0.5;
+   (low, high) 0.5 0.5;
+   (normal, high) 0.5 0.5;
+   (very_high, high) 0.5 0.5;
+   (very_low, high) 0.939128 0.0608722;
+   (high, low) 0.999168 0.000831947;
+   (low, low) 0.999989 1.0593e-05;
+   (normal, low) 0.999991 8.68795e-06;
+   (very_high, low) 0.5 0.5;
+   (very_low, low) 0.5 0.5;
+   (high, normal) 0.5 0.5;
+   (low, normal) 0.999948 5.20779e-05;
+   (normal, normal) 0.5 0.5;
+   (very_high, normal) 0.5 0.5;
+   (very_low, normal) 0.981125 0.0188749;
+   (high, very_high) 0.5 0.5;
+   (low, very_high) 0.5 0.5;
+   (normal, very_high) 0.5 0.5;
+   (very_high, very_high) 0.5 0.5;
+   (very_low, very_high) 0.133822 0.866178;
+   (high, very_low) 0.995276 0.0047241;
+   (low, very_low) 0.997512 0.00248756;
+   (normal, very_low) 0.999993 6.6844e-06;
+   (very_high, very_low) 0.587759 0.412241;
+   (very_low, very_low) 0.5 0.5;
+}
+probability (overstrain_failure | prod_quality, torque, tool_wear) {
+   (H, high, high) 0.999829 0.000170882;
+   (L, high, high) 0.933944 0.0660559;
+   (M, high, high) 0.993506 0.00649407;
+   (H, low, high) 0.999879 0.000121183;
+   (L, low, high) 0.99998 2.02012e-05;
+   (M, low, high) 0.999957 4.27314e-05;
+   (H, normal, high) 0.999948 5.20779e-05;
+   (L, normal, high) 0.999991 9.28488e-06;
+   (M, normal, high) 0.999982 1.78725e-05;
+   (H, very_high, high) 0.998339 0.00166113;
+   (L, very_high, high) 0.353056 0.646944;
+   (M, very_high, high) 0.5 0.5;
+   (H, very_low, high) 0.997788 0.00221239;
+   (L, very_low, high) 0.99963 0.000370096;
+   (M, very_low, high) 0.999334 0.000665779;
+   (H, high, low) 0.999867 0.000133298;
+   (L, high, low) 0.999977 2.29085e-05;
+   (M, high, low) 0.999959 4.11489e-05;
+   (H, low, low) 0.999869 0.000130685;
+   (L, low, low) 0.999977 2.27521e-05;
+   (M, low, low) 0.999955 4.53474e-05;
+   (H, normal, low) 0.99995 5.04999e-05;
+   (L, normal, low) 0.999991 8.8769e-06;
+   (M, normal, low) 0.999983 1.74058e-05;
+   (H, very_high, low) 0.996689 0.00331126;
+   (L, very_high, low) 0.999667 0.000333111;
+   (M, very_high, low) 0.99926 0.000739645;
+   (H, very_low, low) 0.99867 0.00132979;
+   (L, very_low, low) 0.999395 0.000605327;
+   (M, very_low, low) 0.999445 0.000554939;
+   (H, high, normal) 0.999879 0.000121183;
+   (L, high, normal) 0.999977 2.25215e-05;
+   (M, high, normal) 0.999953 4.72769e-05;
+   (H, low, normal) 0.999874 0.000125755;
+   (L, low, normal) 0.999979 2.13666e-05;
+   (M, low, normal) 0.99996 4.01574e-05;
+   (H, normal, normal) 0.999944 5.64908e-05;
+   (L, normal, normal) 0.999991 9.19523e-06;
+   (M, normal, normal) 0.999981 1.89926e-05;
+   (H, very_high, normal) 0.997788 0.00221239;
+   (L, very_high, normal) 0.999584 0.00041632;
+   (M, very_high, normal) 0.999488 0.000512295;
+   (H, very_low, normal) 0.996689 0.00331126;
+   (L, very_low, normal) 0.999753 0.000246792;
+   (M, very_low, normal) 0.999049 0.00095057;
+   (H, high, very_high) 0.908596 0.0914044;
+   (L, high, very_high) 0.46068 0.53932;
+   (M, high, very_high) 0.894598 0.105402;
+   (H, low, very_high) 0.999584 0.00041632;
+   (L, low, very_high) 0.999911 8.88731e-05;
+   (M, low, very_high) 0.999864 0.000136017;
+   (H, normal, very_high) 0.99982 0.000180115;
+   (L, normal, very_high) 0.995771 0.00422945;
+   (M, normal, very_high) 0.99993 7.01656e-05;
+   (H, very_high, very_high) 0.00657895 0.993421;
+   (L, very_high, very_high) 0.00110865 0.998891;
+   (M, very_high, very_high) 0.00331126 0.996689;
+   (H, very_low, very_high) 0.5 0.5;
+   (L, very_low, very_high) 0.999445 0.000554939;
+   (M, very_low, very_high) 0.997788 0.00221239;
+   (H, high, very_low) 0.999858 0.000141804;
+   (L, high, very_low) 0.999978 2.22212e-05;
+   (M, high, very_low) 0.999956 4.35692e-05;
+   (H, low, very_low) 0.999892 0.000107504;
+   (L, low, very_low) 0.999981 1.88317e-05;
+   (M, low, very_low) 0.999959 4.14044e-05;
+   (H, normal, very_low) 0.999946 5.41947e-05;
+   (L, normal, very_low) 0.999991 9.03326e-06;
+   (M, normal, very_low) 0.999983 1.73605e-05;
+   (H, very_high, very_low) 0.997788 0.00221239;
+   (L, very_high, very_low) 0.999667 0.000333111;
+   (M, very_high, very_low) 0.999395 0.000605327;
+   (H, very_low, very_low) 0.997788 0.00221239;
+   (L, very_low, very_low) 0.999733 0.000266525;
+   (M, very_low, very_low) 0.999445 0.000554939;
+}
+probability (random_failure) {
+   table 0.99805 0.00194981;
+}
+
